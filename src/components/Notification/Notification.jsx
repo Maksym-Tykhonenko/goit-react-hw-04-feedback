@@ -1,8 +1,17 @@
-export const Notification = ({message, children }) => {
+import PropTypes from 'prop-types';
+import { Title } from './Notification.styled';
+
+export const Notification = ({ message, children }) => {
     return (
         <>
-            <p>{message}</p>
-            {children} </>
-        
+            <Title>{message}</Title>
+            {children}
+        </>
     )
 };
+
+Notification.propTypes = {
+    message: PropTypes.string,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),])
+}

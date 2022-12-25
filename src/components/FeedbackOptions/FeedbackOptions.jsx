@@ -1,15 +1,24 @@
-export const FeedbackOptions = ({options, handleClick}) => {
+import PropTypes from 'prop-types';
+import { List, Btn } from './FeedbackOptions.styled';
+
+export const FeedbackOptions = ({ options, handleClick }) => {
+    console.log(options)
     return (
-        <ul>
+        <List>
             {options.map((option, index) => (
-                    <button
+                    <Btn
                         key={index}
                         type="button"
                         onClick={() => handleClick(option)}
                     >{option}
-                    </button>
+                    </Btn>
+                    
             ))}
-        </ul>
+        </List>
     );
 };
 
+FeedbackOptions.propTypes = {
+    options: PropTypes.arrayOf(PropTypes.string).isRequired,
+    handleClick: PropTypes.func.isRequired
+};

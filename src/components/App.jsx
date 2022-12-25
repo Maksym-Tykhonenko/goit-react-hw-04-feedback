@@ -1,50 +1,65 @@
-import { Component } from "react";
+import React, { useState } from "react";
 
 import { FeedbackOptions } from "./FeedbackOptions/FeedbackOptions";
 import { Section } from "./Section/Section";
 import { Statistics } from "./Statistics/Statistics";
-import{Notification} from "./Notification/Notification";
+import { Notification } from "./Notification/Notification";
+import { Block } from "./App.styled";
 
 
-export class App extends Component{
+export function App () {
 
-state = {
-  good: 0,
-  neutral: 0,
-  bad: 0
+  const [good, setGoog] = useState(0);
+  const[neutral, setNeutral] = useState(0);
+  const[bad, setBad] = useState(0);
+  
+  const handleClick = (type) => {
+    switch (type) {
+      case 'good':
+        setGoog(prev => prev + 1);
+        break;
+      case 'neutral':
+        setNeutral(prev => prev + 1);
+        break;
+      case 'bad':
+        setBad(prev => prev + 1);
+        break;
+      default:
+        return;
+    };
   };
 
-  handleClick = (option) => {
-    this.setState(prevState => {
-      return {
-        [option]: prevState[option] + 1
-      }
-    })
+  const countTotalFidback = () => {
+    return good + neutral + bad;
   };
+
+  const countPositiveFeedbackPercentage = () => {
+    return Number.parseInt((good / total) * 100);
+  }
+
+  const options = ['good', 'neutral', 'bad'];
+  const total = countTotalFidback(); 
+  const positivePercentage = countPositiveFeedbackPercentage();
   
-  
-  render() {
-    const options = Object.keys(this.state);
-    const { good, neutral, bad } = this.state;
-    const countTotalFeedback = good + neutral + bad;
-    const countPositiveFeedbackPercentage = Number.parseInt((good / countTotalFeedback) * 100);
     return (
-      <>
+      <Block>
         <Section title='Please leave feedback'>
           <FeedbackOptions
             options={options} 
-            handleClick={this.handleClick} />
+            handleClick={handleClick}
+          />
         </Section>
-        {countTotalFeedback > 0 ? <Section title='Statistics'>
+        {total > 0 ? <Section title='Statistics'>
           <Statistics
             good={good}
             bad={bad}
             neutral={neutral}
-            total={countTotalFeedback}
-            positivePercentage={countPositiveFeedbackPercentage } />
-        </Section> : <Notification message="There is no feedback"></Notification>}
+            total={total}
+            positivePercentage={positivePercentage}
+          />
+        </Section> : <Notification message="There is no feedback.....  :-("/>}
         
-      </>
+      </Block>
   );
   };
-};
+
